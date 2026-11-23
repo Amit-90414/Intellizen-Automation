@@ -1,0 +1,9 @@
+{
+  "room": [-7500, 7500, -5400, 8300],
+  "shots": [
+    { "ro": [3700, 1650, 4600], "ta": [150, 1300, 300], "lens": 1.25, "alt": "Render of a hydraulic press guarded by mesh safety fencing, with a light curtain at the loading opening, a floor safety scanner, an emergency stop and an interlocked access gate" },
+    { "ro": [800, 1650, 3200], "ta": [300, 1050, 900], "lens": 1.35, "focusAt": [300, 1000, 950], "alt": "Close-up render of a light curtain on a floor column protecting the loading opening of a guarded press" },
+    { "ro": [400, 1650, 3200], "ta": [-560, 600, 1300], "lens": 1.5, "focusAt": [-620, 500, 1300], "alt": "Close-up render of an emergency stop pedestal and a floor safety scanner beside a marked safety zone" },
+    { "ro": [2100, 1600, 1500], "ta": [1340, 1080, 870], "lens": 1.8, "alt": "Close-up render of a safety interlock switch and actuator on the access gate of a machine guard" }
+  ]
+}

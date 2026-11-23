@@ -1,0 +1,119 @@
+.cardGrid,
+.tileGrid,
+.advantages {
+  display: grid;
+  padding: 0;
+  list-style: none;
+}
+
+.cardGrid {
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.cardItem {
+  height: 260px;
+}
+
+.tileGrid {
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.advantagesSection {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(0, 88, 192, .08), transparent 55%),
+    var(--white);
+}
+
+.advantages {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.clients {
+  color: var(--muted);
+}
+
+@media (min-width: 640px) {
+  .cardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .large {
+    grid-column: 1 / -1;
+    height: 340px;
+  }
+
+  .tileGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 980px) {
+  .cardGrid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .large {
+    grid-column: span 4;
+    height: 380px;
+  }
+
+  .mediumTall {
+    grid-column: span 2;
+    height: 380px;
+  }
+
+  .medium {
+    grid-column: span 2;
+    height: 300px;
+  }
+
+  .tileGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .tileGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 640px) {
+  .advantages {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .advantages > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1180px) {
+  .advantages {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .advantages > :last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+}
+
+.tileGrid > :nth-child(n + 5) {
+  display: none;
+}
+
+@media (min-width: 980px) {
+  .tileGrid > :nth-child(-n + 6) {
+    display: block;
+  }
+}
+
+@media (min-width: 1200px) {
+  .tileGrid > :nth-child(-n + 8) {
+    display: block;
+  }
+}

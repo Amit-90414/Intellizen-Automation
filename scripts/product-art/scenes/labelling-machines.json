@@ -1,0 +1,35 @@
+{
+  "room": [-8000, 9000, -6300, 6200],
+  "shots": [
+    {
+      "ro": [3200, 1700, 3000],
+      "ta": [500, 900, -500],
+      "lens": 1.25,
+      "alt": "Render of a labelling line with a wrap-around bottle labeller, an HMI and a print-and-apply unit over a carton conveyor"
+    },
+    {
+      "ro": [-600, 1650, 900],
+      "ta": [-60, 980, -180],
+      "lens": 1.8,
+      "focusAt": [0, 976, -40],
+      "variant": 1,
+      "alt": "Close-up render of a labelling head with its label reel, peel plate and gap sensor applying labels to white bottles"
+    },
+    {
+      "ro": [2500, 1650, -150],
+      "ta": [1450, 1100, -1220],
+      "lens": 1.7,
+      "focusAt": [1450, 1060, -1200],
+      "variant": 2,
+      "alt": "Close-up render of a print-and-apply labeller with its tamp pad above a carton, next to a carton already labelled with a barcode"
+    },
+    {
+      "ro": [1050, 1450, 650],
+      "ta": [430, 1000, 140],
+      "lens": 1.8,
+      "focusAt": [420, 1000, 190],
+      "variant": 1,
+      "alt": "Close-up render of labelled bottles on a slat conveyor passing a label check sensor"
+    }
+  ]
+}

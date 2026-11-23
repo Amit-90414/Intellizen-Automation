@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Product studio</title>
+</head>
+<body style="margin:0;background:#000">
+<canvas id="c"></canvas>
+<script>
+const vertex = '#version 300 es\nin vec2 a;\nvoid main() { gl_Position = vec4(a, 0.0, 1.0); }'
+const canvas = document.getElementById('c')
+let gl
+let program
+
+const compile = (type, src) => {
+  const shader = gl.createShader(type)
+  gl.shaderSource(shader, src)
+  gl.compileShader(shader)
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader))
+  return shader
+}
+
+window.gpu = () => {
+  const probe = document.createElement('canvas').getContext('webgl2')
+  if (!probe) return 'no webgl2'
+  const ext = probe.getExtension('WEBGL_debug_renderer_info')
+  return ext ? probe.getParameter(ext.UNMASKED_RENDERER_WEBGL) : probe.getParameter(probe.RENDERER)
+}
+
+window.load = (src) => {
+  const started = performance.now()
+  gl = gl ?? canvas.getContext('webgl2', { preserveDrawingBuffer: true, antialias: false })
+  if (program) gl.deleteProgram(program)
+  program = gl.createProgram()
+  gl.attachShader(program, compile(gl.VERTEX_SHADER, vertex))
+  gl.attachShader(program, compile(gl.FRAGMENT_SHADER, src))
+  gl.linkProgram(program)
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program))
+  gl.useProgram(program)
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer())
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW)
+  const loc = gl.getAttribLocation(program, 'a')
+  gl.enableVertexAttribArray(loc)
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
+  return Math.round(performance.now() - started)
+}
+
+const encode = (source, width, quality) => {
+  const out = document.createElement('canvas')
+  out.width = width
+  out.height = Math.round((source.height * width) / source.width)
+  const ctx = out.getContext('2d')
+  ctx.imageSmoothingEnabled = true
+  ctx.imageSmoothingQuality = 'high'
+  ctx.drawImage(source, 0, 0, out.width, out.height)
+  return out.toDataURL('image/jpeg', quality).split(',')[1]
+}
+
+const layer = (w, h) => {
+  const c = document.createElement('canvas')
+  c.width = w
+  c.height = h
+  return [c, c.getContext('2d', { willReadFrequently: true })]
+}
+
+const blurred = (source, w, h, radius) => {
+  const [c, ctx] = layer(w, h)
+  ctx.filter = `blur(${radius}px)`
+  ctx.drawImage(source, 0, 0, w, h)
+  return c
+}
+
+const despeckle = (d, w, h) => {
+  const lum = new Float32Array(w * h)
+  for (let i = 0, j = 0; j < lum.length; i += 4, j++) lum[j] = 0.3 * d[i] + 0.59 * d[i + 1] + 0.11 * d[i + 2]
+  for (let y = 1; y < h - 1; y++) {
+    for (let x = 1; x < w - 1; x++) {
+      const j = y * w + x
+      const c = lum[j]
+      let hi = -1
+      let lo = 1e9
+      let hiAt = j
+      let loAt = j
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          if (dx === 0 && dy === 0) continue
+          const k = j + dy * w + dx
+          if (lum[k] > hi) {
+            hi = lum[k]
+            hiAt = k
+          }
+          if (lum[k] < lo) {
+            lo = lum[k]
+            loAt = k
+          }
+        }
+      }
+      const from = c > hi + 14 ? hiAt : c < lo - 14 ? loAt : -1
+      if (from < 0) continue
+      const i = j * 4
+      const f = from * 4
+      d[i] = d[f]
+      d[i + 1] = d[f + 1]
+      d[i + 2] = d[f + 2]
+    }
+  }
+}
+
+const denoise = (d, w, h) => {
+  const src = new Uint8ClampedArray(d)
+  const radius = 2
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4
+      const r0 = src[i]
+      const g0 = src[i + 1]
+      const b0 = src[i + 2]
+      const l0 = 0.3 * r0 + 0.59 * g0 + 0.11 * b0
+      const s = 9 + 0.07 * l0
+      const inv = 1 / (2 * s * s)
+      let wr = 0
+      let ar = 0
+      let ag = 0
+      let ab = 0
+      for (let dy = -radius; dy <= radius; dy++) {
+        const yy = Math.min(h - 1, Math.max(0, y + dy))
+        for (let dx = -radius; dx <= radius; dx++) {
+          const xx = Math.min(w - 1, Math.max(0, x + dx))
+          const k = (yy * w + xx) * 4
+          const dl = 0.3 * src[k] + 0.59 * src[k + 1] + 0.11 * src[k + 2] - l0
+          const wt = Math.exp(-(dx * dx + dy * dy) * 0.22 - dl * dl * inv)
+          wr += wt
+          ar += src[k] * wt
+          ag += src[k + 1] * wt
+          ab += src[k + 2] * wt
+        }
+      }
+      d[i] = ar / wr
+      d[i + 1] = ag / wr
+      d[i + 2] = ab / wr
+    }
+  }
+}
+
+const develop = (o) => {
+  const w = o.w
+  const h = o.h
+  const [base, bctx] = layer(w, h)
+  bctx.drawImage(canvas, 0, 0)
+  const img = bctx.getImageData(0, 0, w, h)
+  const d = img.data
+  despeckle(d, w, h)
+  denoise(d, w, h)
+  bctx.putImageData(img, 0, 0)
+  const soft = blurred(base, w, h, Math.max(0.6, w / 2400)).getContext('2d').getImageData(0, 0, w, h).data
+  const bw = Math.round(w / 4)
+  const bh = Math.round(h / 4)
+  const [bright, brctx] = layer(bw, bh)
+  brctx.drawImage(base, 0, 0, bw, bh)
+  const bi = brctx.getImageData(0, 0, bw, bh)
+  for (let i = 0; i < bi.data.length; i += 4) {
+    const l = (0.2126 * bi.data[i] + 0.7152 * bi.data[i + 1] + 0.0722 * bi.data[i + 2]) / 255
+    const k = Math.pow(Math.max(0, l - 0.8) / 0.2, 1.5)
+    bi.data[i] *= k
+    bi.data[i + 1] *= k
+    bi.data[i + 2] *= k
+  }
+  brctx.putImageData(bi, 0, 0)
+  const [glowLayer, gctx] = layer(w, h)
+  gctx.globalCompositeOperation = 'lighter'
+  gctx.globalAlpha = 0.55
+  gctx.drawImage(blurred(bright, bw, bh, bw * 0.006), 0, 0, w, h)
+  gctx.globalAlpha = 0.35
+  gctx.drawImage(blurred(bright, bw, bh, bw * 0.03), 0, 0, w, h)
+  const g = gctx.getImageData(0, 0, w, h).data
+  const sharp = new Float32Array(w * h * 3)
+  for (let i = 0, j = 0; i < d.length; i += 4, j += 3) {
+    for (let c = 0; c < 3; c++) sharp[j + c] = d[i + c] + 0.45 * (d[i + c] - soft[i + c]) + g[i + c] * 0.6
+  }
+  let seed = 0x9e3779b9 ^ (w * 7919 + h)
+  const rand = () => {
+    seed ^= seed << 13
+    seed ^= seed >>> 17
+    seed ^= seed << 5
+    return ((seed >>> 0) % 100000) / 100000
+  }
+  const sample = (x, y, c) => {
+    x = Math.min(w - 1.001, Math.max(0, x))
+    y = Math.min(h - 1.001, Math.max(0, y))
+    const x0 = x | 0
+    const y0 = y | 0
+    const fx = x - x0
+    const fy = y - y0
+    const a = (y0 * w + x0) * 3 + c
+    const b = a + 3
+    const e = a + w * 3
+    const f = e + 3
+    return (sharp[a] * (1 - fx) + sharp[b] * fx) * (1 - fy) + (sharp[e] * (1 - fx) + sharp[f] * fx) * fy
+  }
+  const cx = w / 2
+  const cy = h / 2
+  const norm = 1 / (cx * cx + cy * cy)
+  const amp = 4.2 * o.grain
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const dx = x - cx
+      const dy = y - cy
+      const ca = 0.0016 * (dx * dx + dy * dy) * norm
+      const j = (y * w + x) * 3
+      const r = sample(x + dx * ca, y + dy * ca, 0)
+      const gg = sharp[j + 1]
+      const bb = sample(x - dx * ca, y - dy * ca, 2)
+      const l = (0.2126 * r + 0.7152 * gg + 0.0722 * bb) / 255
+      const n = (rand() + rand() - 1) * amp * (1.25 - l)
+      const i = j / 3 * 4
+      d[i] = 2 + 0.985 * (r + n + (rand() - 0.5) * 1.6)
+      d[i + 1] = 2 + 0.985 * (gg + n + (rand() - 0.5) * 1.2)
+      d[i + 2] = 3 + 0.98 * (bb + n + (rand() - 0.5) * 1.8)
+    }
+  }
+  bctx.putImageData(img, 0, 0)
+  return base
+}
+
+const channel = new MessageChannel()
+const waiting = []
+channel.port1.onmessage = () => waiting.shift()?.()
+const yieldFrame = () => new Promise((resolve) => {
+  waiting.push(resolve)
+  channel.port2.postMessage(0)
+})
+
+window.shoot = async (o) => {
+  canvas.width = o.w
+  canvas.height = o.h
+  const set = (name) => gl.getUniformLocation(program, name)
+  gl.uniform2f(set('uRes'), o.w, o.h)
+  gl.uniform1i(set('uSamples'), o.samples)
+  gl.uniform1i(set('uZero'), 0)
+  gl.uniform1f(set('uExposure'), o.exposure)
+  gl.uniform3f(set('uRo'), ...o.ro)
+  gl.uniform3f(set('uTa'), ...o.ta)
+  gl.uniform1f(set('uLens'), o.lens)
+  gl.uniform1f(set('uFocus'), o.focus)
+  gl.uniform1f(set('uAperture'), o.aperture)
+  gl.uniform1f(set('uYaw'), o.yaw)
+  gl.uniform1f(set('uRoll'), o.roll)
+  gl.uniform4f(set('uRoom'), ...o.room)
+  gl.uniform1f(set('uCeil'), o.ceil)
+  gl.uniform2f(set('uLane'), ...o.lane)
+  gl.uniform1f(set('uVariant'), o.variant)
+  gl.viewport(0, 0, o.w, o.h)
+  gl.enable(gl.SCISSOR_TEST)
+  const tile = o.tile
+  const px = new Uint8Array(4)
+  const started = performance.now()
+  for (let y = 0; y < o.h; y += tile) {
+    for (let x = 0; x < o.w; x += tile) {
+      gl.scissor(x, y, tile, tile)
+      gl.drawArrays(gl.TRIANGLES, 0, 3)
+      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px)
+      await yieldFrame()
+    }
+  }
+  gl.disable(gl.SCISSOR_TEST)
+  const ms = Math.round(performance.now() - started)
+  const photo = develop(o)
+  const full = encode(photo, o.outW ?? o.w, o.quality)
+  const small = o.smallW ? encode(photo, o.smallW, o.quality) : null
+  return { ms, full, small }
+}
+</script>
+</body>
+</html>

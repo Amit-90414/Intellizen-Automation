@@ -1,0 +1,32 @@
+{
+  "room": [-7000, 8000, -5200, 7000],
+  "lane": [2300, 750],
+  "shots": [
+    {
+      "ro": [1400, 1650, 3800],
+      "ta": [300, 650, -200],
+      "focusAt": [100, 500, 0],
+      "lens": 1.25,
+      "alt": "Render of a drive panel with three variable frequency drives beside a motor-driven pump and a geared motor on a belt conveyor"
+    },
+    {
+      "ro": [-730, 1550, 500],
+      "ta": [-960, 1590, -500],
+      "lens": 1.7,
+      "alt": "Close-up render of three variable frequency drives with keypads beside the main breaker on a panel mounting plate"
+    },
+    {
+      "ro": [850, 1300, 1450],
+      "ta": [200, 380, 250],
+      "focusAt": [150, 330, 250],
+      "lens": 1.6,
+      "alt": "Close-up render of a blue induction motor coupled to a centrifugal pump with a pressure gauge on the discharge pipe"
+    },
+    {
+      "ro": [2550, 1300, 900],
+      "ta": [2050, 720, -170],
+      "lens": 1.8,
+      "alt": "Close-up render of a geared motor driving the end drum of a belt conveyor carrying cartons"
+    }
+  ]
+}

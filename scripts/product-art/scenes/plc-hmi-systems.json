@@ -1,0 +1,32 @@
+{
+  "room": [-6500, 7000, -4700, 6600],
+  "lane": [2300, 750],
+  "shots": [
+    {
+      "ro": [1400, 1600, 3300],
+      "ta": [260, 1060, 0],
+      "focusAt": [200, 1100, 100],
+      "lens": 1.3,
+      "alt": "Render of an open PLC control cabinet with its door swung wide, beside an HMI operator station on a pedestal"
+    },
+    {
+      "ro": [180, 1600, 650],
+      "ta": [-40, 1680, -150],
+      "lens": 1.7,
+      "alt": "Close-up render of a PLC rack with a power supply, CPU, I/O modules and a network switch on a DIN rail"
+    },
+    {
+      "ro": [1230, 1450, 1050],
+      "ta": [990, 1270, 300],
+      "lens": 1.7,
+      "alt": "Close-up render of an HMI touch screen with start, stop, selector and emergency stop buttons on a pedestal"
+    },
+    {
+      "ro": [250, 1400, 800],
+      "ta": [-70, 1290, -150],
+      "focusAt": [-80, 1300, -130],
+      "lens": 1.6,
+      "alt": "Close-up render of miniature circuit breakers, relays, contactors and terminal blocks wired into ducts inside a PLC panel"
+    }
+  ]
+}

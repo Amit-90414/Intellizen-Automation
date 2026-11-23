@@ -1,0 +1,34 @@
+{
+  "room": [-7000, 7000, -5460, 5000],
+  "shots": [
+    {
+      "ro": [1500, 1650, 1900],
+      "ta": [-50, 950, -150],
+      "focusAt": [-100, 900, 0],
+      "lens": 1.4,
+      "aperture": 6,
+      "alt": "Render of a vision inspection station with a camera and ring light over a conveyor, a reject pusher and a control cabinet with HMI"
+    },
+    {
+      "ro": [160, 1450, 720],
+      "ta": [-250, 1010, 0],
+      "focusAt": [-250, 1000, 20],
+      "lens": 1.8,
+      "alt": "Close-up render of an industrial camera and LED ring light inspecting a machined part on a conveyor"
+    },
+    {
+      "ro": [1000, 1550, 900],
+      "ta": [380, 840, 20],
+      "focusAt": [380, 840, 10],
+      "lens": 1.7,
+      "alt": "Close-up render of a pneumatic reject pusher moving a faulty part towards a reject chute and bin"
+    },
+    {
+      "ro": [320, 1600, 620],
+      "ta": [-260, 1250, -548],
+      "focusAt": [-260, 1270, -548],
+      "lens": 1.7,
+      "alt": "Close-up render of an HMI showing an inspection result on the control cabinet beside the conveyor"
+    }
+  ]
+}

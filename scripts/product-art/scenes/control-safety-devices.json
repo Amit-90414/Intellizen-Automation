@@ -1,0 +1,33 @@
+{
+  "room": [-8000, 8500, -5300, 5500],
+  "shots": [
+    {
+      "ro": [900, 1600, 2300],
+      "ta": [0, 900, 0],
+      "focusAt": [0, 950, 150],
+      "lens": 1.4,
+      "alt": "Render of an operator control console with an HMI, emergency stop, push buttons, selector switches, pilot lights and a tower light"
+    },
+    {
+      "ro": [150, 1400, 570],
+      "ta": [-5, 935, 30],
+      "focusAt": [20, 920, 60],
+      "lens": 1.8,
+      "alt": "Close-up render of push buttons, selector switches, pilot lights and an emergency stop on a sloped control panel"
+    },
+    {
+      "ro": [-1000, 1380, 230],
+      "ta": [-1250, 1200, -560],
+      "focusAt": [-1250, 1200, -540],
+      "lens": 1.6,
+      "alt": "Close-up render of safety relays, contactors, circuit breakers and terminal blocks on DIN rails inside an open control enclosure"
+    },
+    {
+      "ro": [1330, 1330, 330],
+      "ta": [1270, 930, -260],
+      "focusAt": [1250, 940, -230],
+      "lens": 1.7,
+      "alt": "Render of an emergency stop station, push buttons, a pilot light, a selector switch and a push-button box being assembled on a workbench"
+    }
+  ]
+}

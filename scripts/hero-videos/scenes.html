@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Hero scenes</title>
+<style>
+  body { margin: 0; background: #0b1a3a; display: grid; place-items: center; min-height: 100vh; }
+  canvas { width: min(100vw, 1280px); height: auto; }
+</style>
+</head>
+<body>
+<canvas id="preview" width="1280" height="720"></canvas>
+<script>
+const W = 1280
+const H = 720
+const TAU = Math.PI * 2
+const C = { navy: '0,40,112', royal: '0,48,136', blue: '0,88,192', sky: '63,163,255', yellow: '246,180,0', amber: '217,154,0' }
+const rgba = (c, a) => `rgba(${c},${Math.max(0, Math.min(1, a)).toFixed(3)})`
+
+function seeded(seed) {
+  return () => {
+    seed = (seed + 0x6d2b79f5) | 0
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function backdrop(ctx) {
+  const g = ctx.createLinearGradient(0, 0, 0, H)
+  g.addColorStop(0, '#F8FBFF')
+  g.addColorStop(1, '#E4ECF8')
+  ctx.fillStyle = g
+  ctx.fillRect(0, 0, W, H)
+}
+
+function dots(ctx, step, alpha) {
+  ctx.fillStyle = rgba(C.royal, alpha)
+  for (let x = step / 2; x < W; x += step) {
+    for (let y = step / 2; y < H; y += step) ctx.fillRect(x - 0.75, y - 0.75, 1.5, 1.5)
+  }
+}
+
+function glow(ctx, x, y, r, color, a) {
+  const g = ctx.createRadialGradient(x, y, 0, x, y, r)
+  g.addColorStop(0, rgba(color, a))
+  g.addColorStop(1, rgba(color, 0))
+  ctx.fillStyle = g
+  ctx.beginPath()
+  ctx.arc(x, y, r, 0, TAU)
+  ctx.fill()
+}
+
+function polyline(points) {
+  const segments = []
+  let total = 0
+  for (let i = 1; i < points.length; i++) {
+    const [x1, y1] = points[i - 1]
+    const [x2, y2] = points[i]
+    const len = Math.hypot(x2 - x1, y2 - y1)
+    segments.push({ x1, y1, x2, y2, len, start: total })
+    total += len
+  }
+  return { points, segments, total }
+}
+
+function pointAt(path, u) {
+  const d = Math.max(0, Math.min(1, u)) * path.total
+  for (const s of path.segments) {
+    if (d <= s.start + s.len) {
+      const k = s.len === 0 ? 0 : (d - s.start) / s.len
+      return [s.x1 + (s.x2 - s.x1) * k, s.y1 + (s.y2 - s.y1) * k]
+    }
+  }
+  return path.points[path.points.length - 1]
+}
+
+function circuitScene() {
+  const r = seeded(11)
+  const traces = []
+  const clearX = 250
+  for (let i = 0; i < 30; i++) {
+    const fromLeft = i % 2 === 0
+    const dir = fromLeft ? 1 : -1
+    const limit = fromLeft ? W / 2 - clearX : W / 2 + clearX
+    let x = fromLeft ? -30 : W + 30
+    let y = 30 + r() * (H - 60)
+    const pts = [[x, y]]
+    const segs = 2 + Math.floor(r() * 3)
+    for (let s = 0; s < segs; s++) {
+      const nx = x + dir * (70 + r() * 150)
+      if ((fromLeft && nx > limit) || (!fromLeft && nx < limit)) break
+      x = nx
+      pts.push([x, y])
+      if (s < segs - 1) {
+        const d = (r() < 0.5 ? -1 : 1) * (18 + r() * 46)
+        if (y + d < 20 || y + d > H - 20) continue
+        x += dir * Math.abs(d)
+        y += d
+        pts.push([x, y])
+      }
+    }
+    if (pts.length > 1) traces.push({ path: polyline(pts), speed: 1 + Math.floor(r() * 2), offset: r(), hot: r() < 0.22 })
+  }
+  for (let i = 0; i < 10; i++) {
+    const fromTop = i % 2 === 0
+    const x = r() < 0.5 ? 60 + r() * 300 : W - 360 + r() * 300
+    let y = fromTop ? -30 : H + 30
+    const dir = fromTop ? 1 : -1
+    const pts = [[x, y]]
+    y += dir * (90 + r() * 120)
+    pts.push([x, y])
+    const bend = (r() < 0.5 ? -1 : 1) * (20 + r() * 40)
+    pts.push([x + bend, y + dir * Math.abs(bend)])
+    pts.push([x + bend, y + dir * (Math.abs(bend) + 60 + r() * 80)])
+    traces.push({ path: polyline(pts), speed: 1, offset: r(), hot: r() < 0.3 })
+  }
+
+  return (ctx, t, T) => {
+    backdrop(ctx)
+    dots(ctx, 32, 0.07)
+    ctx.lineJoin = 'round'
+    ctx.lineCap = 'round'
+    for (const trace of traces) {
+      const { points } = trace.path
+      ctx.strokeStyle = rgba(C.navy, 0.15)
+      ctx.lineWidth = 2
+      ctx.beginPath()
+      points.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)))
+      ctx.stroke()
+      const [ex, ey] = points[points.length - 1]
+      const p = (t / T * trace.speed + trace.offset) % 1
+      const arrive = Math.max(0, 1 - Math.abs(p - 0.97) / 0.06)
+      if (arrive > 0) glow(ctx, ex, ey, 22, trace.hot ? C.yellow : C.sky, 0.35 * arrive)
+      ctx.fillStyle = '#F8FBFF'
+      ctx.strokeStyle = rgba(C.navy, 0.32)
+      ctx.lineWidth = 2
+      ctx.beginPath()
+      ctx.arc(ex, ey, 5, 0, TAU)
+      ctx.fill()
+      ctx.stroke()
+      const color = trace.hot ? C.yellow : C.blue
+      const steps = 14
+      for (let s = 0; s < steps; s++) {
+        const u = p - (s / steps) * 0.12
+        if (u < 0) break
+        const [x, y] = pointAt(trace.path, u)
+        ctx.fillStyle = rgba(color, 0.55 * (1 - s / steps))
+        ctx.beginPath()
+        ctx.arc(x, y, 2.6 * (1 - s / steps) + 0.6, 0, TAU)
+        ctx.fill()
+      }
+      const [hx, hy] = pointAt(trace.path, p)
+      glow(ctx, hx, hy, 14, trace.hot ? C.yellow : C.sky, 0.45)
+      ctx.fillStyle = rgba(trace.hot ? C.amber : C.blue, 0.95)
+      ctx.beginPath()
+      ctx.arc(hx, hy, 3.2, 0, TAU)
+      ctx.fill()
+    }
+  }
+}
+
+function isoCube(ctx, cx, cy, a, top, left, right, stroke) {
+  const dx = a * Math.cos(Math.PI / 6)
+  const dy = a / 2
+  const T0 = [cx, cy - a]
+  const R0 = [cx + dx, cy - a + dy]
+  const L0 = [cx - dx, cy - a + dy]
+  const M = [cx, cy - a + 2 * dy]
+  const face = (pts, fill) => {
+    ctx.beginPath()
+    pts.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)))
+    ctx.closePath()
+    ctx.fillStyle = fill
+    ctx.fill()
+    ctx.strokeStyle = stroke
+    ctx.stroke()
+  }
+  face([T0, R0, M, L0], top)
+  face([L0, M, [M[0], M[1] + a], [L0[0], L0[1] + a]], left)
+  face([M, R0, [R0[0], R0[1] + a], [M[0], M[1] + a]], right)
+}
+
+function blueprintScene() {
+  const r = seeded(29)
+  const k = Math.tan(Math.PI / 6)
+  const gap = 56
+  const pulses = Array.from({ length: 18 }, () => ({
+    family: r() < 0.5 ? 1 : -1,
+    c: Math.round((r() * (H + W * k)) / gap) * gap - (r() < 0.5 ? 0 : W * k),
+    speed: 1 + Math.floor(r() * 2),
+    offset: r(),
+    hot: r() < 0.25,
+  }))
+  const cubes = [
+    [150, 200, 54], [250, 560, 40], [1120, 170, 46], [1030, 590, 58], [70, 420, 30], [1210, 420, 34],
+  ].map(([x, y, a], i) => ({ x, y, a, phase: i / 6, hot: i === 3 }))
+
+  return (ctx, t, T) => {
+    backdrop(ctx)
+    ctx.lineWidth = 1
+    for (const family of [1, -1]) {
+      ctx.strokeStyle = rgba(C.royal, 0.075)
+      for (let c = -W * k; c < H + W * k; c += gap) {
+        ctx.beginPath()
+        ctx.moveTo(0, c)
+        ctx.lineTo(W, c + family * W * k)
+        ctx.stroke()
+      }
+    }
+    for (let x = 0; x < W; x += gap * Math.cos(Math.PI / 6) * 2) {
+      ctx.strokeStyle = rgba(C.royal, 0.035)
+      ctx.beginPath()
+      ctx.moveTo(x, 0)
+      ctx.lineTo(x, H)
+      ctx.stroke()
+    }
+    for (const p of pulses) {
+      const u = (t / T * p.speed + p.offset) % 1
+      const span = W + 400
+      const hx = u * span - 200
+      const hy = p.c + p.family * hx * k
+      const tail = 180
+      const tx = hx - tail
+      const ty = p.c + p.family * tx * k
+      const g = ctx.createLinearGradient(tx, ty, hx, hy)
+      const color = p.hot ? C.yellow : C.blue
+      g.addColorStop(0, rgba(color, 0))
+      g.addColorStop(1, rgba(color, 0.6))
+      ctx.strokeStyle = g
+      ctx.lineWidth = 2.4
+      ctx.beginPath()
+      ctx.moveTo(tx, ty)
+      ctx.lineTo(hx, hy)
+      ctx.stroke()
+      glow(ctx, hx, hy, 12, p.hot ? C.yellow : C.sky, 0.5)
+    }
+    ctx.lineWidth = 1.5
+    for (const cube of cubes) {
+      const breathe = 0.5 + 0.5 * Math.sin(TAU * (t / T + cube.phase))
+      const lift = 6 * Math.sin(TAU * (t / T + cube.phase))
+      if (cube.hot) {
+        isoCube(ctx, cube.x, cube.y + lift, cube.a, rgba('255,210,77', 0.35 + 0.25 * breathe), rgba(C.yellow, 0.28), rgba(C.amber, 0.32), rgba(C.amber, 0.6))
+      } else {
+        isoCube(ctx, cube.x, cube.y + lift, cube.a, rgba(C.blue, 0.05 + 0.08 * breathe), rgba(C.royal, 0.05), rgba(C.navy, 0.08), rgba(C.royal, 0.35))
+      }
+    }
+  }
+}
+
+function conveyorScene() {
+  const vpX = W / 2
+  const vpY = -320
+  const lanes = 9
+  const laneWidth = 230
+  const rollers = 22
+  const boxesPerLane = 3
+  const r = seeded(7)
+  const offsets = Array.from({ length: lanes }, () => r())
+  const edgeX = (i, y) => {
+    const bottomX = vpX + (i - lanes / 2) * laneWidth
+    const k = (y - vpY) / (H - vpY)
+    return vpX + (bottomX - vpX) * k
+  }
+  const depthY = (s) => vpY + (H + 40 - vpY) * (0.38 + 0.62 * s * s)
+
+  return (ctx, t, T) => {
+    backdrop(ctx)
+    for (let i = 0; i < lanes; i++) {
+      const centre = Math.abs(i + 0.5 - lanes / 2) / (lanes / 2)
+      const strength = 0.35 + 0.65 * centre
+      ctx.fillStyle = rgba(C.navy, (i % 2 ? 0.035 : 0.055) * strength)
+      ctx.beginPath()
+      ctx.moveTo(edgeX(i, 0), 0)
+      ctx.lineTo(edgeX(i + 1, 0), 0)
+      ctx.lineTo(edgeX(i + 1, H), H)
+      ctx.lineTo(edgeX(i, H), H)
+      ctx.closePath()
+      ctx.fill()
+      ctx.strokeStyle = rgba(C.royal, 0.16 * strength)
+      ctx.lineWidth = 1.5
+      ctx.beginPath()
+      ctx.moveTo(edgeX(i, 0), 0)
+      ctx.lineTo(edgeX(i, H), H)
+      ctx.stroke()
+      for (let j = 0; j < rollers; j++) {
+        const s = (j / rollers + (t / T) * 2) % 1
+        const y = depthY(s)
+        if (y < 0 || y > H) continue
+        ctx.strokeStyle = rgba(C.royal, (0.04 + 0.1 * s) * strength)
+        ctx.lineWidth = 1 + 1.5 * s
+        ctx.beginPath()
+        ctx.moveTo(edgeX(i, y) + 3, y)
+        ctx.lineTo(edgeX(i + 1, y) - 3, y)
+        ctx.stroke()
+      }
+      for (let b = 0; b < boxesPerLane; b++) {
+        const s = (b / boxesPerLane + t / T + offsets[i]) % 1
+        const y = depthY(s)
+        const left = edgeX(i, y)
+        const right = edgeX(i + 1, y)
+        const w = (right - left) * 0.52
+        const x = (left + right) / 2 - w / 2
+        const h = w * 0.55
+        const d = w * 0.28
+        const a = Math.min(1, s / 0.18) * (0.25 + 0.4 * strength)
+        ctx.fillStyle = rgba('255,210,77', a)
+        ctx.beginPath()
+        ctx.moveTo(x, y - h)
+        ctx.lineTo(x + d * 0.6, y - h - d)
+        ctx.lineTo(x + w + d * 0.6, y - h - d)
+        ctx.lineTo(x + w, y - h)
+        ctx.closePath()
+        ctx.fill()
+        ctx.fillStyle = rgba(C.yellow, a)
+        ctx.fillRect(x, y - h, w, h)
+        ctx.fillStyle = rgba(C.amber, a)
+        ctx.beginPath()
+        ctx.moveTo(x + w, y - h)
+        ctx.lineTo(x + w + d * 0.6, y - h - d)
+        ctx.lineTo(x + w + d * 0.6, y - d)
+        ctx.lineTo(x + w, y)
+        ctx.closePath()
+        ctx.fill()
+        ctx.fillStyle = rgba('224,161,0', a)
+        ctx.fillRect(x + w * 0.44, y - h, w * 0.12, h)
+      }
+    }
+    const fade = ctx.createLinearGradient(0, 0, 0, H * 0.45)
+    fade.addColorStop(0, 'rgba(248,251,255,1)')
+    fade.addColorStop(1, 'rgba(248,251,255,0)')
+    ctx.fillStyle = fade
+    ctx.fillRect(0, 0, W, H * 0.45)
+  }
+}
+
+function scanScene() {
+  const r = seeded(53)
+  const cx = W * 0.68
+  const cy = H * 0.55
+  const points = []
+  while (points.length < 150) {
+    const x = r() * W
+    const y = r() * H
+    const inner = ((x - cx) / 380) ** 2 + ((y - cy) / 190) ** 2
+    if (inner < 1) continue
+    points.push({ x, y, angle: (Math.atan2(y - cy, x - cx) + TAU) % TAU, hot: r() < 0.12, mark: r() < 0.08 })
+  }
+
+  return (ctx, t, T) => {
+    backdrop(ctx)
+    dots(ctx, 40, 0.05)
+    ctx.lineWidth = 1
+    for (let radius = 120; radius < 900; radius += 95) {
+      ctx.strokeStyle = rgba(C.royal, 0.16)
+      ctx.beginPath()
+      ctx.arc(cx, cy, radius, 0, TAU)
+      ctx.stroke()
+    }
+    ctx.strokeStyle = rgba(C.royal, 0.12)
+    ctx.beginPath()
+    ctx.moveTo(0, cy)
+    ctx.lineTo(W, cy)
+    ctx.moveTo(cx, 0)
+    ctx.lineTo(cx, H)
+    ctx.stroke()
+    const theta = (TAU * t) / T
+    const trail = 0.9
+    const cone = ctx.createConicGradient(theta - trail, cx, cy)
+    cone.addColorStop(0, rgba(C.sky, 0))
+    cone.addColorStop(trail / TAU, rgba(C.sky, 0.36))
+    cone.addColorStop(trail / TAU + 0.0005, rgba(C.sky, 0))
+    cone.addColorStop(1, rgba(C.sky, 0))
+    ctx.fillStyle = cone
+    ctx.fillRect(0, 0, W, H)
+    ctx.strokeStyle = rgba(C.blue, 0.65)
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    ctx.moveTo(cx, cy)
+    ctx.lineTo(cx + Math.cos(theta) * 1000, cy + Math.sin(theta) * 1000)
+    ctx.stroke()
+    for (const p of points) {
+      const behind = (theta - p.angle + TAU) % TAU
+      const b = Math.max(0, 1 - behind / 1.6)
+      const color = p.hot ? C.amber : C.blue
+      if (b > 0) glow(ctx, p.x, p.y, 12 + 10 * b, p.hot ? C.yellow : C.sky, 0.6 * b)
+      ctx.fillStyle = rgba(color, 0.35 + 0.65 * b)
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, 2.6 + 1.4 * b, 0, TAU)
+      ctx.fill()
+      if (p.mark && b > 0.15) {
+        const s = 16
+        ctx.strokeStyle = rgba(p.hot ? C.amber : C.blue, 0.7 * b)
+        ctx.lineWidth = 1.5
+        ctx.beginPath()
+        for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+          ctx.moveTo(p.x + sx * s, p.y + sy * s - sy * 6)
+          ctx.lineTo(p.x + sx * s, p.y + sy * s)
+          ctx.lineTo(p.x + sx * s - sx * 6, p.y + sy * s)
+        }
+        ctx.stroke()
+      }
+    }
+  }
+}
+
+function bokehScene() {
+  const r = seeded(97)
+  const palette = [C.blue, C.sky, C.sky, C.royal, C.yellow]
+  const lights = Array.from({ length: 46 }, () => {
+    const centreBias = r() < 0.5 ? r() * 0.32 : 0.68 + r() * 0.32
+    return {
+      cx: centreBias * W,
+      cy: r() * H,
+      ax: 30 + r() * 110,
+      ay: 15 + r() * 60,
+      k: 1 + Math.floor(r() * 2),
+      phase: r() * TAU,
+      size: 26 + r() * 120,
+      color: palette[Math.floor(r() * palette.length)],
+      alpha: 0.14 + r() * 0.18,
+    }
+  })
+  const dust = Array.from({ length: 70 }, () => ({ x: r() * W, y: r() * H, k: 1 + Math.floor(r() * 3), phase: r() * TAU, amp: 8 + r() * 26 }))
+
+  return (ctx, t, T) => {
+    backdrop(ctx)
+    const beam = ctx.createLinearGradient(0, 0, W, H)
+    beam.addColorStop(0, 'rgba(63,163,255,0)')
+    beam.addColorStop(0.45, 'rgba(63,163,255,0.14)')
+    beam.addColorStop(0.55, 'rgba(63,163,255,0)')
+    ctx.fillStyle = beam
+    ctx.fillRect(0, 0, W, H)
+    const phase = (TAU * t) / T
+    for (const l of lights) {
+      const x = l.cx + l.ax * Math.cos(phase * l.k + l.phase)
+      const y = l.cy + l.ay * Math.sin(phase * l.k + l.phase)
+      const size = l.size * (1 + 0.08 * Math.sin(phase * l.k + l.phase * 2))
+      const g = ctx.createRadialGradient(x, y, size * 0.15, x, y, size)
+      g.addColorStop(0, rgba(l.color, l.alpha))
+      g.addColorStop(0.7, rgba(l.color, l.alpha * 0.55))
+      g.addColorStop(1, rgba(l.color, 0))
+      ctx.fillStyle = g
+      ctx.beginPath()
+      ctx.arc(x, y, size, 0, TAU)
+      ctx.fill()
+    }
+    for (const d of dust) {
+      const x = d.x + d.amp * Math.cos(phase * d.k + d.phase)
+      const y = d.y + d.amp * 0.6 * Math.sin(phase * d.k + d.phase)
+      ctx.fillStyle = rgba(C.royal, 0.3 + 0.15 * Math.sin(phase * d.k + d.phase))
+      ctx.beginPath()
+      ctx.arc(x, y, 1.6, 0, TAU)
+      ctx.fill()
+    }
+  }
+}
+
+const scenes = {
+  circuit: { make: circuitScene, seconds: 10 },
+  blueprint: { make: blueprintScene, seconds: 10 },
+  conveyor: { make: conveyorScene, seconds: 8 },
+  scan: { make: scanScene, seconds: 8 },
+  bokeh: { make: bokehScene, seconds: 12 },
+}
+
+const toBase64 = (blob) => new Promise((resolve) => {
+  const reader = new FileReader()
+  reader.onload = () => resolve(String(reader.result).split(',')[1])
+  reader.readAsDataURL(blob)
+})
+
+window.recordScene = async (name, mimeType = 'video/mp4;codecs=avc1.4D401F', bitrate = 1400000) => {
+  const { make, seconds } = scenes[name]
+  const draw = make()
+  const canvas = document.getElementById('preview')
+  const ctx = canvas.getContext('2d')
+  draw(ctx, 0, seconds)
+  const poster = String(canvas.toDataURL('image/jpeg', 0.82)).split(',')[1]
+  const stream = canvas.captureStream(30)
+  const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: bitrate })
+  const chunks = []
+  recorder.ondataavailable = (event) => event.data.size && chunks.push(event.data)
+  const done = new Promise((resolve) => (recorder.onstop = resolve))
+  recorder.start()
+  const start = performance.now()
+  await new Promise((resolve) => {
+    const frame = (now) => {
+      const t = (now - start) / 1000
+      if (t >= seconds) {
+        draw(ctx, seconds, seconds)
+        resolve()
+        return
+      }
+      draw(ctx, t, seconds)
+      requestAnimationFrame(frame)
+    }
+    requestAnimationFrame(frame)
+  })
+  recorder.stop()
+  await done
+  const blob = new Blob(chunks, { type: mimeType })
+  return { video: await toBase64(blob), poster, bytes: blob.size, seconds }
+}
+
+window.previewScene = (name) => {
+  const { make, seconds } = scenes[name]
+  const draw = make()
+  const ctx = document.getElementById('preview').getContext('2d')
+  const start = performance.now()
+  const frame = (now) => {
+    draw(ctx, ((now - start) / 1000) % seconds, seconds)
+    requestAnimationFrame(frame)
+  }
+  requestAnimationFrame(frame)
+}
+
+window.drawAt = (name, t) => {
+  const { make, seconds } = scenes[name]
+  make()(document.getElementById('preview').getContext('2d'), t, seconds)
+}
+
+const requested = new URLSearchParams(location.search).get('scene')
+if (requested && scenes[requested]) window.previewScene(requested)
+</script>
+</body>
+</html>

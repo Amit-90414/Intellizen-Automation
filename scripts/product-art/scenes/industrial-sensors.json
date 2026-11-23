@@ -1,0 +1,34 @@
+{
+  "room": [-7000, 7000, -5500, 4000],
+  "shots": [
+    {
+      "ro": [175, 1125, 385],
+      "ta": [-20, 925, -50],
+      "focusAt": [0, 912, 0],
+      "lens": 1.8,
+      "alt": "Photo of an inductive, a capacitive and a photoelectric sensor with their cables on a workshop bench"
+    },
+    {
+      "ro": [95, 972, 170],
+      "ta": [-15, 912, 10],
+      "focusAt": [4, 912, 4],
+      "lens": 2.1,
+      "variant": 1,
+      "alt": "Photo of an M18 inductive proximity sensor with a threaded steel body, lock nuts and an LED ring on a workbench"
+    },
+    {
+      "ro": [-20, 985, 75],
+      "ta": [-95, 935, -72],
+      "lens": 2.2,
+      "variant": 2,
+      "alt": "Photo of a compact photoelectric sensor on a steel mounting bracket with an M8 connector"
+    },
+    {
+      "ro": [170, 982, 35],
+      "ta": [44, 916, -96],
+      "lens": 2.2,
+      "variant": 3,
+      "alt": "Photo of an M30 capacitive proximity sensor with a plastic threaded body and lock nuts on a workbench"
+    }
+  ]
+}

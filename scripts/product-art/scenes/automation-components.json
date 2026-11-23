@@ -1,0 +1,31 @@
+{
+  "room": [-7000, 7000, -4900, 4200],
+  "shots": [
+    {
+      "ro": [520, 1560, 1480],
+      "ta": [-80, 1080, -60],
+      "focusAt": [-60, 1050, 60],
+      "lens": 1.6,
+      "alt": "Render of automation components on a workbench: an open control enclosure with power supply, breakers, contactors and PLC, an electric motor and a pneumatic cylinder with valves"
+    },
+    {
+      "ro": [-60, 1200, 650],
+      "ta": [-250, 965, 170],
+      "lens": 1.9,
+      "alt": "Close-up render of a pneumatic cylinder on a mounting plate, connected by blue air tubes to a solenoid valve manifold"
+    },
+    {
+      "ro": [720, 1250, 520],
+      "ta": [430, 1030, 40],
+      "lens": 1.9,
+      "alt": "Close-up render of a blue electric motor with cooling fins, terminal box and blank nameplate bolted to a base plate on a workbench"
+    },
+    {
+      "ro": [-120, 1350, 300],
+      "ta": [-330, 1190, -330],
+      "focusAt": [-330, 1200, -320],
+      "lens": 1.7,
+      "alt": "Close-up render of a power supply, circuit breakers, contactors, PLC modules and terminals on DIN rails inside an open control enclosure"
+    }
+  ]
+}

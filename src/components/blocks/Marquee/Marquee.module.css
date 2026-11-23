@@ -1,0 +1,101 @@
+.marquee {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: scroll var(--duration, 40s) linear infinite;
+}
+
+.reverse {
+  animation-direction: reverse;
+}
+
+.list {
+  display: flex;
+  gap: 14px;
+  padding: 6px 7px 14px;
+  list-style: none;
+}
+
+.item {
+  flex: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 8px 18px 8px 8px;
+  border-radius: 999px;
+  font-family: var(--font-head);
+  font-size: 15.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color 200ms, color 200ms, box-shadow 200ms, transform 250ms var(--ease);
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.solid .chip {
+  background: var(--navy);
+  box-shadow: 0 10px 22px -14px rgba(0, 40, 112, .7);
+  color: var(--white);
+}
+
+.solid .icon {
+  background: var(--yellow);
+  color: var(--navy);
+}
+
+.soft .chip {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.soft .icon {
+  background: var(--yellow);
+  color: var(--navy);
+}
+
+@keyframes scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (hover: hover) {
+  .marquee:hover .track {
+    animation-play-state: paused;
+  }
+
+  .solid .chip:hover {
+    background: var(--blue);
+    box-shadow: 0 14px 26px -14px rgba(0, 88, 192, .8);
+    transform: translateY(-2px);
+  }
+
+  .solid .chip:hover .icon {
+    background: var(--yellow-light);
+  }
+
+  .soft .chip:hover {
+    background: var(--white);
+    box-shadow: inset 0 0 0 1.5px var(--blue), 0 8px 20px -16px rgba(0, 40, 112, .5);
+    color: var(--navy);
+    transform: translateY(-2px);
+  }
+}

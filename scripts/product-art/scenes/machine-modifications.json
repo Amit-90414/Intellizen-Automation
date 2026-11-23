@@ -1,0 +1,9 @@
+{
+  "room": [-6500, 8000, -5200, 6500],
+  "shots": [
+    { "ro": [2900, 1650, 3500], "ta": [520, 1250, -50], "lens": 1.3, "alt": "Render of an older power press retrofitted with a new control cabinet, HMI, light curtains, sensors and an emergency stop" },
+    { "ro": [500, 1450, 1500], "ta": [-40, 1180, 290], "lens": 1.6, "alt": "Close-up render of new light curtains and inductive sensors fitted around the die area of an older press" },
+    { "ro": [2500, 1600, 1900], "ta": [1150, 1450, 100], "lens": 1.5, "alt": "Close-up render of a new control cabinet with an HMI, push buttons and a tower light beside an older press" },
+    { "ro": [-1150, 1650, 1500], "ta": [-500, 1350, 380], "lens": 1.6, "alt": "Close-up render of a new HMI on a swing arm and an emergency stop added to a retrofitted press" }
+  ]
+}

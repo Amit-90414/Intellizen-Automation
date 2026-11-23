@@ -1,0 +1,152 @@
+.section {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(64px, 9vw, 112px);
+  background:
+    linear-gradient(rgba(0, 48, 136, .045) 1px, transparent 1px) 0 0 / 40px 40px,
+    linear-gradient(90deg, rgba(0, 48, 136, .045) 1px, transparent 1px) 0 0 / 40px 40px,
+    linear-gradient(180deg, var(--white) 0%, var(--sky) 100%);
+}
+
+.grid {
+  display: grid;
+  gap: 32px;
+  align-items: start;
+}
+
+.title span {
+  display: block;
+  color: var(--blue);
+}
+
+.text {
+  max-width: 520px;
+  margin-top: 16px;
+  font-size: clamp(16px, 1.3vw, 18px);
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.office {
+  padding: clamp(18px, 3vw, 28px);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--line), var(--shadow-card);
+}
+
+.officeHead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.pin {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--royal), var(--blue));
+  color: var(--white);
+}
+
+.pin svg {
+  width: 24px;
+  height: 24px;
+  animation: bob 2.4s ease-in-out infinite;
+}
+
+.officeLabel {
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.officeName {
+  font-size: 19px;
+}
+
+.details {
+  display: grid;
+  gap: 14px;
+  padding-block: 18px;
+  font-style: normal;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+  font-size: 15.5px;
+  line-height: 1.5;
+}
+
+.row > svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  color: var(--blue);
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  font-weight: 700;
+  color: var(--navy);
+  overflow-wrap: anywhere;
+}
+
+.row {
+  align-items: flex-start;
+}
+
+.row > span:not(.links) {
+  padding-top: 0;
+}
+
+.map {
+  width: 100%;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (hover: hover) {
+  .links a:hover {
+    color: var(--blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+@media (min-width: 980px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: 56px;
+  }
+}

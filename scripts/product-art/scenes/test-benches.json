@@ -1,0 +1,9 @@
+{
+  "room": [-6500, 6500, -4900, 5500],
+  "shots": [
+    { "ro": [1900, 1650, 2300], "ta": [0, 1200, -50], "lens": 1.3, "alt": "Render of a test bench with a clamped part under a pneumatic test head, pressure gauges, a leak test display, an HMI and pass and fail bins" },
+    { "ro": [520, 1450, 1000], "ta": [-40, 1180, 60], "lens": 1.7, "alt": "Close-up render of a valve body clamped in a test fixture under a pneumatic test head with a test hose" },
+    { "ro": [700, 1650, 950], "ta": [180, 1560, -360], "lens": 1.6, "alt": "Close-up render of a test bench panel with pressure gauges, a digital test display, an HMI, push buttons and a tower light" },
+    { "ro": [1100, 1500, 700], "ta": [560, 980, 0], "lens": 1.8, "alt": "Close-up render of green pass and red fail bins holding tested valve bodies on a test bench" }
+  ]
+}

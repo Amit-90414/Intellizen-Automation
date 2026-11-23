@@ -1,0 +1,9 @@
+{
+  "room": [-7000, 7000, -4900, 6200],
+  "shots": [
+    { "ro": [2400, 1650, 3050], "ta": [40, 1220, 120], "lens": 1.3, "alt": "Render of a special purpose machine with a pneumatic press head, polycarbonate guards, light curtains, an HMI and a two-hand control station" },
+    { "ro": [450, 1400, 1150], "ta": [0, 1130, 40], "lens": 1.7, "focusAt": [0, 1100, 40], "alt": "Close-up render of the pneumatic press head, guide rods and part fixture inside a special purpose machine" },
+    { "ro": [1700, 1600, 1500], "ta": [560, 1400, 380], "lens": 1.6, "focusAt": [700, 1420, 470], "alt": "Close-up render of the light curtain at the loading opening and the HMI on its swing arm" },
+    { "ro": [420, 1350, 1350], "ta": [0, 860, 450], "lens": 1.7, "alt": "Close-up render of the two-hand control station with an emergency stop at the front of the machine" }
+  ]
+}

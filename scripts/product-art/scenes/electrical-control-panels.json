@@ -1,0 +1,32 @@
+{
+  "room": [-7000, 7500, -4800, 7000],
+  "lane": [2400, 750],
+  "shots": [
+    {
+      "ro": [-900, 1650, 3600],
+      "ta": [250, 1100, 0],
+      "focusAt": [0, 1100, 300],
+      "lens": 1.25,
+      "alt": "Render of a line-up of three electrical control panels with the right-hand panel open to show breakers, busbars and wiring"
+    },
+    {
+      "ro": [560, 1650, 750],
+      "ta": [800, 1760, -220],
+      "lens": 1.6,
+      "alt": "Close-up render of copper busbars behind a clear shroud above the main moulded case circuit breaker in an open panel"
+    },
+    {
+      "ro": [-500, 1450, 1250],
+      "ta": [-820, 1310, 300],
+      "lens": 1.42,
+      "alt": "Close-up render of a panel door with a power meter, red, yellow and blue phase indicator lights, a selector switch and a rotary isolator"
+    },
+    {
+      "ro": [430, 1350, 900],
+      "ta": [800, 1150, -220],
+      "focusAt": [780, 1150, -200],
+      "lens": 1.6,
+      "alt": "Close-up render of contactors, overload relays, miniature circuit breakers and terminal blocks with ferrule-marked wiring in cable ducts"
+    }
+  ]
+}

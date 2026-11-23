@@ -1,0 +1,32 @@
+{
+  "blog-robot": {
+    "file": "blog/robot-cell-vs-special-purpose-machine.jpg",
+    "scene": "industrial-robotics",
+    "alt": "Guarded robot palletising cell with a six-axis robot, an infeed conveyor and a stacked pallet in a factory",
+    "shot": { "ro": [-3200, 1650, 3800], "ta": [200, 900, -300], "lens": 1.3, "roll": 0.4 }
+  },
+  "blog-vision": {
+    "file": "blog/vision-inspection-on-the-production-line.jpg",
+    "scene": "vision-camera-systems",
+    "alt": "Vision inspection station with a camera and ring light above parts on a conveyor, beside a control cabinet",
+    "shot": { "ro": [-1700, 1650, 1700], "ta": [0, 950, -100], "lens": 1.4, "roll": -0.5 }
+  },
+  "blog-conveyor": {
+    "file": "blog/belt-roller-or-modular-conveyor.jpg",
+    "scene": "conveyors-handling-systems",
+    "alt": "Belt, roller and modular belt conveyors carrying cartons in a factory",
+    "shot": { "ro": [-2600, 1700, 3300], "ta": [0, 760, -600], "lens": 1.25, "roll": 0.3 }
+  },
+  "blog-safety": {
+    "file": "blog/machine-safety-guarding-light-curtains-interlocks.jpg",
+    "scene": "machine-safety",
+    "alt": "Hydraulic press guarded by mesh safety fencing, with a light curtain, a floor safety scanner and an emergency stop",
+    "shot": { "ro": [-2900, 1650, 4300], "ta": [100, 1250, 300], "lens": 1.25, "roll": -0.4 }
+  },
+  "blog-retrofit": {
+    "file": "blog/automating-an-existing-line.jpg",
+    "scene": "machine-modifications",
+    "alt": "Older power press retrofitted with a new control cabinet, HMI, light curtains and sensors",
+    "shot": { "ro": [-1900, 1650, 3400], "ta": [500, 1250, 0], "lens": 1.3, "roll": 0.5 }
+  }
+}

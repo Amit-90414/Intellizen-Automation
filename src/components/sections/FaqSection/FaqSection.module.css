@@ -1,0 +1,110 @@
+.list {
+  display: grid;
+  gap: 12px;
+  max-width: 860px;
+  margin-inline: 0;
+}
+
+.item {
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: box-shadow 250ms var(--ease);
+}
+
+.open {
+  box-shadow: inset 0 0 0 1.5px var(--blue), var(--shadow-lift);
+}
+
+.question {
+  font-family: var(--font-body);
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  padding: 14px 18px;
+  border: 0;
+  border-radius: var(--radius);
+  background: none;
+  text-align: left;
+}
+
+.num {
+  flex: none;
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--blue);
+}
+
+.q {
+  flex: 1;
+  font-size: clamp(15.5px, 1.3vw, 17px);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--navy);
+}
+
+.chevron {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--blue);
+  transition: transform 250ms var(--ease);
+}
+
+.open .chevron {
+  transform: rotate(180deg);
+}
+
+.answer {
+  max-width: 76ch;
+  padding: 0 18px 18px 50px;
+  color: var(--muted);
+  font-size: 15.5px;
+  line-height: 1.65;
+}
+
+.more {
+  margin-top: 26px;
+  text-align: center;
+}
+
+.moreLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  color: var(--blue);
+}
+
+.moreLink svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 250ms var(--ease);
+}
+
+@media (hover: hover) {
+  .item:not(.open):hover {
+    box-shadow: inset 0 0 0 1.5px var(--ring);
+  }
+
+  .moreLink:hover svg {
+    transform: translateX(4px);
+  }
+}
+
+@media (max-width: 479px) {
+  .answer {
+    padding-left: 18px;
+  }
+}

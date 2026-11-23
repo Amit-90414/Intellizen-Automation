@@ -1,0 +1,12 @@
+.section {
+  padding-block: clamp(56px, 8vw, 104px);
+  scroll-margin-top: var(--header-h);
+}
+
+.white {
+  background: var(--white);
+}
+
+.sky {
+  background: var(--sky);
+}

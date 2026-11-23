@@ -1,0 +1,32 @@
+{
+  "room": [-6500, 8000, -5750, 7000],
+  "lane": [0, 0],
+  "shots": [
+    {
+      "ro": [1550, 1650, 3600],
+      "ta": [350, 1100, -400],
+      "focusAt": [150, 1000, -200],
+      "lens": 1.25,
+      "alt": "Render of a SCADA operator station on a factory floor with a plant overview screen, a desk with three monitors and a server rack"
+    },
+    {
+      "ro": [250, 1600, 1300],
+      "ta": [0, 1720, -820],
+      "lens": 1.35,
+      "alt": "Close-up render of a large SCADA plant overview screen showing tanks, flow lines, machine status and trends"
+    },
+    {
+      "ro": [950, 1500, 900],
+      "ta": [-90, 950, -170],
+      "focusAt": [0, 960, -150],
+      "lens": 1.5,
+      "alt": "Close-up render of an operator desk with SCADA trend, overview and alarm screens, a keyboard and a mouse"
+    },
+    {
+      "ro": [1480, 1350, 880],
+      "ta": [1540, 660, -130],
+      "lens": 1.6,
+      "alt": "Close-up render of a server rack with servers, a network switch with patch cables and a UPS"
+    }
+  ]
+}

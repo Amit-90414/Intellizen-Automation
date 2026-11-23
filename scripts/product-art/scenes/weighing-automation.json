@@ -1,0 +1,84 @@
+{
+  "room": [
+    -7000,
+    7000,
+    -5000,
+    6500
+  ],
+  "shots": [
+    {
+      "ro": [
+        2300,
+        1750,
+        3700
+      ],
+      "ta": [
+        -250,
+        800,
+        450
+      ],
+      "lens": 1.2,
+      "alt": "A checkweighing line with infeed and outfeed conveyors, a stainless checkweigher with a weight display, a reject pusher and bin, and a platform scale with a drum"
+    },
+    {
+      "ro": [
+        480,
+        1450,
+        1250
+      ],
+      "ta": [
+        0,
+        1150,
+        -150
+      ],
+      "lens": 1.55,
+      "focusAt": [
+        -40,
+        1300,
+        -250
+      ],
+      "variant": 1,
+      "alt": "Close-up of a stainless checkweigher with a carton on its weigh belt, photo-eye sensors and a weight indicator display on a pole"
+    },
+    {
+      "ro": [
+        1950,
+        1550,
+        1800
+      ],
+      "ta": [
+        1200,
+        760,
+        230
+      ],
+      "lens": 1.35,
+      "focusAt": [
+        1250,
+        900,
+        0
+      ],
+      "variant": 2,
+      "alt": "Close-up of a pneumatic reject pusher on the outfeed conveyor with a chute into a red reject bin holding a rejected carton"
+    },
+    {
+      "ro": [
+        -450,
+        1550,
+        3250
+      ],
+      "ta": [
+        -1700,
+        720,
+        1100
+      ],
+      "lens": 1.35,
+      "focusAt": [
+        -1520,
+        600,
+        1290
+      ],
+      "variant": 3,
+      "alt": "A blue drum on a checker-plate platform scale for batch weighing, with a weight indicator on a column"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "room": [-9000, 7500, -7000, 6200],
+  "shots": [
+    {
+      "ro": [2800, 1650, 2900],
+      "ta": [-450, 760, -500],
+      "lens": 1.25,
+      "alt": "Render of a belt conveyor, a roller conveyor with a diverter paddle and a modular belt conveyor carrying cartons and a tote"
+    },
+    {
+      "ro": [1350, 1600, 1250],
+      "ta": [650, 850, 40],
+      "lens": 1.6,
+      "alt": "Close-up render of a pneumatic diverter paddle steering a carton across a roller conveyor"
+    },
+    {
+      "ro": [1750, 1300, -1900],
+      "ta": [1000, 830, -1300],
+      "lens": 1.7,
+      "focusAt": [900, 830, -1350],
+      "alt": "Close-up render of a modular plastic belt conveyor with a photoelectric sensor and reflector across the belt"
+    },
+    {
+      "ro": [-1250, 1550, 1450],
+      "ta": [-1950, 820, 120],
+      "lens": 1.6,
+      "alt": "Close-up render of a belt conveyor with cartons, a photoelectric sensor and a geared drive motor"
+    }
+  ]
+}

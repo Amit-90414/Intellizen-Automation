@@ -1,0 +1,84 @@
+{
+  "room": [
+    -7000,
+    7000,
+    -5000,
+    6500
+  ],
+  "shots": [
+    {
+      "ro": [
+        1500,
+        1800,
+        4300
+      ],
+      "ta": [
+        -80,
+        850,
+        0
+      ],
+      "lens": 1.25,
+      "alt": "A chain cut-to-length machine with a chain reel, a drive unit, a measuring wheel, a guarded pneumatic cutter, an output tray and a control cabinet with an HMI"
+    },
+    {
+      "ro": [
+        1260,
+        1470,
+        980
+      ],
+      "ta": [
+        720,
+        1150,
+        0
+      ],
+      "lens": 1.5,
+      "focusAt": [
+        720,
+        1120,
+        60
+      ],
+      "variant": 1,
+      "alt": "Close-up of the guarded pneumatic cutter at the end of the chain guide, with cut chain lengths in the output tray"
+    },
+    {
+      "ro": [
+        -180,
+        1480,
+        760
+      ],
+      "ta": [
+        -390,
+        975,
+        -30
+      ],
+      "lens": 1.6,
+      "focusAt": [
+        -380,
+        980,
+        0
+      ],
+      "variant": 2,
+      "alt": "Close-up of the chain drive unit with its geared motor and the length-measuring wheel riding on the chain in its guide"
+    },
+    {
+      "ro": [
+        1000,
+        1550,
+        1250
+      ],
+      "ta": [
+        1450,
+        1180,
+        0
+      ],
+      "lens": 1.45,
+      "focusAt": [
+        1620,
+        1300,
+        60
+      ],
+      "variant": 3,
+      "alt": "The control cabinet with an HMI, push buttons, an emergency stop and a tower light beside the machine's output tray"
+    }
+  ]
+}

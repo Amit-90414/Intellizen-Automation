@@ -1,0 +1,32 @@
+{
+  "room": [-6500, 8500, -5600, 9000],
+  "shots": [
+    {
+      "ro": [4300, 1650, 5600],
+      "ta": [900, 950, -300],
+      "lens": 1.25,
+      "alt": "Photo of an automated line with an infeed conveyor, a vision inspection gantry, a guarded palletising robot and control cabinets"
+    },
+    {
+      "ro": [1500, 1620, 2700],
+      "ta": [-700, 950, 200],
+      "focusAt": [-700, 950, 350],
+      "lens": 1.6,
+      "alt": "Photo of a six-axis robot placing a carton onto a pallet stack inside a guarded cell"
+    },
+    {
+      "ro": [4150, 1580, 1450],
+      "ta": [2910, 1200, 0],
+      "focusAt": [2910, 1300, 30],
+      "lens": 1.75,
+      "alt": "Photo of a vision camera with a ring light on a gantry above cartons on a belt conveyor"
+    },
+    {
+      "ro": [1000, 1640, 1450],
+      "ta": [2050, 1450, -1150],
+      "focusAt": [2050, 1350, -900],
+      "lens": 1.5,
+      "alt": "Photo of control cabinets with an HMI, emergency stop and tower light behind the infeed conveyor"
+    }
+  ]
+}
