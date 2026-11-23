@@ -174,7 +174,7 @@ export function ContactForm({ defaultProduct = '' }: { defaultProduct?: string }
         '',
         values.message,
       ].join('\n')
-      window.location.href = `mailto:${site.emails[1]}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+      window.location.href = `mailto:${site.emails[0]}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
       setStatus('mail')
       return
     }

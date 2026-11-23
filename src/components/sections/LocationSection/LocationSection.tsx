@@ -1,4 +1,5 @@
-import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowUpRight, Mail, MapPin } from 'lucide-react'
+import { WhatsAppIcon } from '../../ui/WhatsAppIcon/WhatsAppIcon'
 import { locationSection } from '../../../data/home'
 import { site, social } from '../../../data/site'
 import { MapEmbed } from '../../blocks/MapEmbed/MapEmbed'
@@ -50,10 +51,10 @@ export function LocationSection() {
               <span>{site.address}</span>
             </p>
             <p className={styles.row}>
-              <Phone aria-hidden="true" />
+              <WhatsAppIcon />
               <span className={styles.links}>
                 {site.phones.map((phone) => (
-                  <a key={phone.tel} href={`tel:${phone.tel}`}>
+                  <a key={phone.tel} href={phone.wa} target="_blank" rel="noopener noreferrer">
                     {phone.label}
                   </a>
                 ))}

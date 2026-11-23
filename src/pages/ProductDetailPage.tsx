@@ -1,4 +1,5 @@
-import { ArrowRight, Boxes, Check, Download, Phone, Workflow } from 'lucide-react'
+import { ArrowRight, Boxes, Check, Download, Workflow } from 'lucide-react'
+import { WhatsAppIcon } from '../components/ui/WhatsAppIcon/WhatsAppIcon'
 import { Link, useParams } from 'react-router'
 import { CtaBand } from '../components/blocks/CtaBand/CtaBand'
 import { BlogSection } from '../components/sections/BlogSection/BlogSection'
@@ -146,8 +147,8 @@ export default function ProductDetailPage() {
               {copy.product.quote}
               <ArrowRight aria-hidden="true" />
             </Button>
-            <Button href={`tel:${site.phones[0].tel}`} variant="ghost">
-              <Phone aria-hidden="true" />
+            <Button href={site.phones[0].wa} target="_blank" rel="noopener noreferrer" variant="ghost">
+              <WhatsAppIcon />
               {site.phones[0].label}
             </Button>
           </>

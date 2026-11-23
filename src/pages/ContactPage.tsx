@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
-import { ArrowDown, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowDown, Mail, MapPin } from 'lucide-react'
+import { WhatsAppIcon } from '../components/ui/WhatsAppIcon/WhatsAppIcon'
 import { useSearchParams } from 'react-router'
 import { ContactForm } from '../components/blocks/ContactForm/ContactForm'
 import { MapEmbed } from '../components/blocks/MapEmbed/MapEmbed'
@@ -62,8 +63,8 @@ export default function ContactPage() {
               {contact.form}
               <ArrowDown aria-hidden="true" />
             </Button>
-            <Button href={`tel:${site.phones[0].tel}`} variant="ghost">
-              <Phone aria-hidden="true" />
+            <Button href={site.phones[0].wa} target="_blank" rel="noopener noreferrer" variant="ghost">
+              <WhatsAppIcon />
               {site.phones[0].label}
             </Button>
           </>
@@ -88,10 +89,10 @@ export default function ContactPage() {
                   ))}
                 </p>
               </InfoCard>
-              <InfoCard icon={<Phone aria-hidden="true" />} title="Call">
+              <InfoCard icon={<WhatsAppIcon />} title="WhatsApp">
                 <p className={styles.links}>
                   {site.phones.map((phone) => (
-                    <a key={phone.tel} href={`tel:${phone.tel}`}>
+                    <a key={phone.tel} href={phone.wa} target="_blank" rel="noopener noreferrer">
                       {phone.label}
                     </a>
                   ))}

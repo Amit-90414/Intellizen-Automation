@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { ChevronDown, Mail, Phone, X } from 'lucide-react'
+import { ChevronDown, Mail, X } from 'lucide-react'
+import { WhatsAppIcon } from '../../ui/WhatsAppIcon/WhatsAppIcon'
 import { Link, NavLink, useLocation } from 'react-router'
 import { productGroups } from '../../../data/menu'
 import { copy, nav, site } from '../../../data/site'
@@ -179,8 +180,8 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
               <Button to="/contact" variant="dark" block onClick={() => onClose(false)}>
                 {copy.header.cta}
               </Button>
-              <a href={`tel:${site.phones[0].tel}`} className={styles.contact}>
-                <Phone aria-hidden="true" />
+              <a href={site.phones[0].wa} target="_blank" rel="noopener noreferrer" className={styles.contact}>
+                <WhatsAppIcon />
                 {site.phones[0].label}
               </a>
               <a href={`mailto:${site.emails[1]}`} className={styles.contact}>

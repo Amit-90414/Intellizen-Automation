@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowUpRight, ChevronDown, Menu, Phone } from 'lucide-react'
+import { ArrowUpRight, ChevronDown, Menu } from 'lucide-react'
+import { WhatsAppIcon } from '../../ui/WhatsAppIcon/WhatsAppIcon'
 import { Link, NavLink, useLocation } from 'react-router'
 import { productGroups } from '../../../data/menu'
 import { copy, nav, site } from '../../../data/site'
@@ -205,8 +206,8 @@ export function Header() {
         </nav>
 
         <div className={styles.actions}>
-          <a href={`tel:${phone.tel}`} className={styles.phone}>
-            <Phone aria-hidden="true" />
+          <a href={phone.wa} target="_blank" rel="noopener noreferrer" className={styles.phone}>
+            <WhatsAppIcon />
             {phone.label}
           </a>
           <Button to="/contact" variant="dark" className={styles.cta}>

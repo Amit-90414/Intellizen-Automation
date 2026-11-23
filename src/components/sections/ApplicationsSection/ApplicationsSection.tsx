@@ -1,4 +1,5 @@
-import { ArrowRight, Phone } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
+import { WhatsAppIcon } from '../../ui/WhatsAppIcon/WhatsAppIcon'
 import { Link } from 'react-router'
 import { applicationsSection } from '../../../data/home'
 import { copy, site } from '../../../data/site'
@@ -25,8 +26,8 @@ export function ApplicationsSection() {
               {copy.home.primary}
               <ArrowRight aria-hidden="true" />
             </Button>
-            <a href={`tel:${site.phones[0].tel}`} className={styles.call}>
-              <Phone aria-hidden="true" />
+            <a href={site.phones[0].wa} target="_blank" rel="noopener noreferrer" className={styles.call}>
+              <WhatsAppIcon />
               {site.phones[0].label}
             </a>
           </div>

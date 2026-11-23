@@ -1,5 +1,6 @@
 import { useId } from 'react'
-import { ArrowRight, Phone } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
+import { WhatsAppIcon } from '../../ui/WhatsAppIcon/WhatsAppIcon'
 import { copy, site } from '../../../data/site'
 import { Button } from '../../ui/Button/Button'
 import { Container } from '../../ui/Container/Container'
@@ -22,8 +23,8 @@ export function CtaBand() {
             {copy.cta.primary}
             <ArrowRight aria-hidden="true" />
           </Button>
-          <Button href={`tel:${site.phones[0].tel}`} variant="secondary">
-            <Phone aria-hidden="true" />
+          <Button href={site.phones[0].wa} target="_blank" rel="noopener noreferrer" variant="secondary">
+            <WhatsAppIcon />
             {copy.cta.call}
           </Button>
         </Reveal>

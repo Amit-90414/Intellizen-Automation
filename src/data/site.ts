@@ -6,8 +6,8 @@ export const site = {
   address: 'Plot No 250, Village Kuranwala, Hansa Industrial Park, Derabassi, SAS Nagar, Punjab 140501',
   emails: ['info@intellizen.co.in', 'sales@intellizen.co.in'],
   phones: [
-    { label: '+91 86992 01062', tel: '+918699201062' },    
-    { label: '+91 79018 03375', tel: '+917901803375' },
+    { label: '+91 86992 01062', tel: '+918699201062', wa: 'https://wa.me/918699201062' },
+    { label: '+91 79018 03375', tel: '+917901803375', wa: 'https://wa.me/917901803375' },
 
   ],
   gstin: '03EXNPS1739C1ZF',
@@ -48,7 +48,7 @@ export const copy = {
   cta: {
     title: 'Plan your next line with us.',
     primary: 'Request a quote',
-    call: `Call ${site.phones[0].label}`,
+    call: `WhatsApp ${site.phones[0].label}`,
   },
   home: {
     title: 'Industrial Automation & Robotics in Punjab | Intellizen',
@@ -84,7 +84,7 @@ export const copy = {
   product: {
     related: 'Related products',
     quote: 'Request a quote',
-    call: `Call ${site.phones[0].label}`,
+    call: `WhatsApp ${site.phones[0].label}`,
     photoSoon: 'Photos coming soon',
     glance: 'At a glance',
     notes: {
@@ -177,8 +177,8 @@ export const copy = {
     heading: 'Let’s automate your line',
     sub: 'Tell us what you want to automate. Our team will get back to you.',
     success: 'Thank you — we’ll get back to you soon.',
-    error: `Couldn’t send. Please call ${site.phones[0].label} or email ${site.emails[1]}.`,
-    mailOpened: `Your email app should now open with the enquiry filled in. If it doesn’t, email ${site.emails[1]} or call ${site.phones[0].label}.`,
+    error: `Couldn’t send. Please WhatsApp us on ${site.phones[0].label} or email ${site.emails[0]}.`,
+    mailOpened: `Your email app should now open with the enquiry filled in. If it doesn’t, email ${site.emails[0]} or WhatsApp us on ${site.phones[0].label}.`,
     subject: 'Website enquiry',
     form: 'Send an enquiry',
     imageAlt: 'Special purpose machine with a pneumatic press head, polycarbonate guards, light curtains, an HMI and a two-hand control station',

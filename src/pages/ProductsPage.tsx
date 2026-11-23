@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowRight, Cog, Package, Phone } from 'lucide-react'
+import { ArrowRight, Cog, Package } from 'lucide-react'
+import { WhatsAppIcon } from '../components/ui/WhatsAppIcon/WhatsAppIcon'
 import { useSearchParams } from 'react-router'
 import { CtaBand } from '../components/blocks/CtaBand/CtaBand'
 import { BlogSection } from '../components/sections/BlogSection/BlogSection'
@@ -62,8 +63,8 @@ export default function ProductsPage() {
               {copy.home.primary}
               <ArrowRight aria-hidden="true" />
             </Button>
-            <Button href={`tel:${site.phones[0].tel}`} variant="ghost">
-              <Phone aria-hidden="true" />
+            <Button href={site.phones[0].wa} target="_blank" rel="noopener noreferrer" variant="ghost">
+              <WhatsAppIcon />
               {site.phones[0].label}
             </Button>
           </>
