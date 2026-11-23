@@ -67,7 +67,7 @@ export const privacyPolicy: LegalDoc = {
       id: 'enquiry-form',
       title: 'How enquiry form submissions are handled',
       paragraphs: [
-        'When you send the enquiry form, your details are emailed to our team so we can reply to your enquiry.',
+        'When you send the enquiry form, your own email app opens with your details filled in, addressed to our team. Nothing is sent until you send that email yourself.',
         'We do not send automatic replies, and we do not add you to any mailing list. A member of our team will reply to you personally.',
       ],
     },
