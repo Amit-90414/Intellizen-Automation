@@ -93,26 +93,6 @@ $notice = implode("\n", [
 
 $sent = send($company['inbox'], "Website enquiry: $interest - $name", $notice, $company['sender'], $company['name'] . ' website', $email);
 
-if ($email !== '') {
-  $about = $product !== '' ? " about $product" : '';
-  $thanks = implode("\n", [
-    "Hi $name,",
-    '',
-    "Thank you for contacting {$company['name']}. We have received your enquiry$about and our team will get back to you shortly.",
-    '',
-    'Your message:',
-    $message,
-    '',
-    "If it is urgent, call us on {$company['phone']}.",
-    '',
-    'Regards,',
-    $company['name'],
-    $company['address'],
-    $company['site'],
-  ]);
-  send($email, "We received your enquiry - {$company['name']}", $thanks, $company['sender'], $company['name'], $company['inbox']);
-}
-
 $logDir = dirname($_SERVER['DOCUMENT_ROOT'] ?: __DIR__) . '/enquiries';
 if (is_dir($logDir) || @mkdir($logDir, 0750, true)) {
   $row = [$when, $name, $org, $phone, $email, $interest, str_replace("\n", ' / ', $message), $ip];

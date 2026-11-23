@@ -67,8 +67,8 @@ export const privacyPolicy: LegalDoc = {
       id: 'enquiry-form',
       title: 'How enquiry form submissions are handled',
       paragraphs: [
-        'When you send the enquiry form, your details are sent by email from our own web server to our sales team, and a copy of the enquiry is kept in a private log on that server so no enquiry is lost.',
-        'If you give an email address, we send you one automatic message confirming that we received your enquiry. We do not add you to any mailing list.',
+        'When you send the enquiry form, your details are emailed to our team so we can reply to your enquiry.',
+        'We do not send automatic replies, and we do not add you to any mailing list. A member of our team will reply to you personally.',
       ],
     },
     {

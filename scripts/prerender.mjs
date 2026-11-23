@@ -59,16 +59,20 @@ const origin = `http://127.0.0.1:${server.address().port}`
 
 const port = 9600 + Math.floor(Math.random() * 150)
 const profile = mkdtempSync(join(tmpdir(), 'prerender-'))
-const proc = spawn(browser, ['--headless=new', '--no-first-run', '--hide-scrollbars', ...(process.env.CI ? ['--no-sandbox'] : []), `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, 'about:blank'], { stdio: 'ignore' })
+const ciFlags = process.env.CI ? ['--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage'] : []
+const proc = spawn(browser, ['--headless=new', '--no-first-run', '--hide-scrollbars', ...ciFlags, `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, 'about:blank'], { stdio: 'ignore' })
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
+// Wait up to 30 s for the browser to open its first page. An empty target list
+// means the browser is up but the page isn't ready yet, so wait then too.
 let targets = []
-for (let i = 0; i < 75 && targets.length === 0; i++) {
+for (let i = 0; i < 150 && targets.length === 0; i++) {
   try {
     targets = (await (await fetch(`http://127.0.0.1:${port}/json/list`)).json()).filter((t) => t.type === 'page')
   } catch {
-    await sleep(200)
+    // browser not listening yet
   }
+  if (targets.length === 0) await sleep(200)
 }
 if (targets.length === 0) throw new Error('Browser did not start')
 
